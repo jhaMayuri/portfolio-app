@@ -1,0 +1,15 @@
+{
+  "name": "Mayuri Jha Portfolio",
+  "short_name": "Mayuri",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "theme_color": "#081122",
+  "background_color": "#081122",
+  "display": "standalone"
+}
