@@ -1,43 +1,63 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import BlogCard from './components/BlogCard'
 import ExperienceCard from './components/ExperienceCard'
 
 const navItems = [
   { id: 'about', label: 'About' },
   { id: 'experience', label: 'Experience' },
-  { id: 'blogs', label: 'Blogs' },
+  { id: 'writing', label: 'Writing' },
 ]
 
 const experiences = [
   {
-    period: '2023 — Present',
+    period: '2024 — Present',
     role: 'Staff Software Engineer',
-    company: 'CrowdANALYTIX',
+    company: 'dataX',
+    companyUrl: 'https://dataX.ai',
     summary:
       'Leading frontend architecture for large-scale Angular applications, driving modern web standards, and mentoring engineers across teams.',
     stack: ['Angular', 'React', 'TypeScript', 'Web Architecture', 'Performance Optimization'],
   },
   {
-    period: '2020 — 2023',
-    role: 'Lead Frontend Engineer',
-    company: 'CrowdANALYTIX',
+    period: '2022 — 2024',
+    role: 'Lead Software Engineer',
+    company: 'dataX',
+    companyUrl: 'https://dataX.ai',
     summary:
       'Built scalable UI platforms, improved developer productivity with reusable patterns, and delivered cloud-integrated frontend systems.',
     stack: ['JavaScript', 'UI Engineering', 'REST APIs', 'Google Cloud'],
   },
   {
-    period: '2017 — 2020',
-    role: 'Frontend Engineer',
-    company: 'CrowdANALYTIX',
+    period: '2020 — 2022',
+    role: 'Senior Software Engineer',
+    company: 'dataX',
+    companyUrl: 'https://dataX.ai',
     summary:
       'Developed robust product interfaces with a focus on clean UX, responsive design, and maintainable component architecture.',
     stack: ['Angular', 'Git', 'Cloud Integrations'],
+  },
+  {
+    period: '2017 — 2020',
+    role: 'Software Engineer',
+    company: 'dataX',
+    companyUrl: 'https://dataX.ai',
+    summary:
+      'Delivered enterprise web features, collaborated with cross-functional teams, and strengthened frontend engineering quality across releases.',
+    stack: ['JavaScript', 'REST APIs', 'Git'],
+  },
+  {
+    period: '2016 — 2017',
+    role: 'Programmer Analyst',
+    company: 'Cognizant Technology Solutions',
+    companyUrl: 'https://www.cognizant.com',
+    summary:
+      'Started engineering journey by building production UI modules, improving reliability, and supporting client-facing web solutions.',
+    stack: ['Web Architecture', 'UI Engineering', 'Performance Optimization'],
   },
 ]
 
 const blogPosts = [
   {
-    year: '2026',
     title: 'RxJS Subjects in the Angular Signals Era: Obsolete or Still Powerful?',
     excerpt:
       'Sharing some thoughts on how Signals and Subjects might coexist in modern Angular applications.',
@@ -45,15 +65,13 @@ const blogPosts = [
     image: '/blogs/signals-vs-subject.png',
   },
   {
-    year: '2025',
-    title: 'Angular Performance Tuning Checklist',
+    title: 'Are We Over-Engineering Frontend Applications?',
     excerpt:
-      'A field-tested checklist for reducing bundle size, improving runtime speed, and making UI interactions smoother.',
-    href: '#',
-    image: '',
+      'A reflection on the balance between robust architecture and simplicity in frontend development.',
+    href: 'https://dev.to/mayuri_jha_bc0b497f737276/are-we-over-engineering-frontend-applications-3dmi',
+    image: '/blogs/over-engineering.png',
   },
   {
-    year: '2024',
     title: 'Mentoring Engineers Through Architecture Reviews',
     excerpt:
       'How structured code reviews and architecture discussions can accelerate engineering maturity.',
@@ -84,9 +102,9 @@ const iconPaths = {
 
 const profilePhoto = ''
 
-function Section({ id, title, children }) {
+function Section({ id, title, children, isActive }) {
   return (
-    <section id={id} className="section">
+    <section id={id} className={`section ${isActive ? 'section-active' : ''}`}>
       <h2 className="section-title">{title}</h2>
       {children}
     </section>
@@ -171,9 +189,11 @@ function SideIntro({ activeSection }) {
 }
 
 export default function App() {
+  const mainRef = useRef(null)
   const [scrollY, setScrollY] = useState(0)
   const [theme, setTheme] = useState('dark')
   const [activeSection, setActiveSection] = useState('about')
+  const [showAllExperience, setShowAllExperience] = useState(false)
 
   useEffect(() => {
     const storedTheme = window.localStorage.getItem('portfolio-theme')
@@ -183,35 +203,64 @@ export default function App() {
   }, [])
 
   useEffect(() => {
-    const onScroll = () => setScrollY(window.scrollY)
-    onScroll()
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
+    const updateScrollY = () => {
+      const isDesktop = window.matchMedia('(min-width: 1024px)').matches
+      const next = isDesktop && mainRef.current ? mainRef.current.scrollTop : window.scrollY
+      setScrollY(next)
+    }
+
+    const mainEl = mainRef.current
+    updateScrollY()
+
+    window.addEventListener('scroll', updateScrollY, { passive: true })
+    window.addEventListener('resize', updateScrollY)
+    if (mainEl) mainEl.addEventListener('scroll', updateScrollY, { passive: true })
+
+    return () => {
+      window.removeEventListener('scroll', updateScrollY)
+      window.removeEventListener('resize', updateScrollY)
+      if (mainEl) mainEl.removeEventListener('scroll', updateScrollY)
+    }
   }, [])
 
   useEffect(() => {
-    const sectionEls = navItems
-      .map((item) => document.getElementById(item.id))
-      .filter((element) => element !== null)
+    const updateActiveSection = () => {
+      const isDesktop = window.matchMedia('(min-width: 1024px)').matches
+      const mainEl = mainRef.current
+      const scrollPos = isDesktop && mainEl ? mainEl.scrollTop : window.scrollY
+      const threshold = isDesktop ? 170 : 190
 
-    if (!sectionEls.length) return undefined
+      let currentId = navItems[0].id
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)
+      navItems.forEach(({ id }) => {
+        const section = document.getElementById(id)
+        if (!section) return
 
-        if (visible.length > 0) {
-          setActiveSection(visible[0].target.id)
+        const sectionTop = isDesktop && mainEl
+          ? section.offsetTop
+          : section.getBoundingClientRect().top + window.scrollY
+
+        if (scrollPos + threshold >= sectionTop) {
+          currentId = id
         }
-      },
-      { threshold: [0.3, 0.5, 0.7], rootMargin: '-15% 0px -45% 0px' },
-    )
+      })
 
-    sectionEls.forEach((section) => observer.observe(section))
-    return () => observer.disconnect()
-  }, [])
+      setActiveSection(currentId)
+    }
+
+    const mainEl = mainRef.current
+    updateActiveSection()
+
+    if (mainEl) mainEl.addEventListener('scroll', updateActiveSection, { passive: true })
+    window.addEventListener('scroll', updateActiveSection, { passive: true })
+    window.addEventListener('resize', updateActiveSection)
+
+    return () => {
+      if (mainEl) mainEl.removeEventListener('scroll', updateActiveSection)
+      window.removeEventListener('scroll', updateActiveSection)
+      window.removeEventListener('resize', updateActiveSection)
+    }
+  }, [showAllExperience])
 
   const toggleTheme = () => {
     setTheme((prev) => {
@@ -220,6 +269,8 @@ export default function App() {
       return next
     })
   }
+
+  const visibleExperiences = showAllExperience ? experiences : experiences.slice(0, 3)
 
   return (
     <div className={`app-shell ${theme === 'light' ? 'theme-light' : ''}`}>
@@ -230,8 +281,8 @@ export default function App() {
       <div className="layout-grid">
         <SideIntro activeSection={activeSection} />
 
-        <main>
-          <Section id="about" title="About">
+        <main ref={mainRef} className="main-column">
+          <Section id="about" title="About" isActive={activeSection === 'about'}>
             <div className="content-card">
               <p className="content-body content-body--strong">
               Frontend engineer specializing in Angular architecture,
@@ -246,15 +297,24 @@ export default function App() {
             </div>
           </Section>
 
-          <Section id="experience" title="Experience">
+          <Section id="experience" title="Experience" isActive={activeSection === 'experience'}>
             <div className="space-y-5">
-              {experiences.map((item, idx) => (
+              {visibleExperiences.map((item, idx) => (
                 <ExperienceCard key={`${item.role}-${item.period}`} item={item} delay={idx * 90} />
               ))}
             </div>
+            {experiences.length > 3 ? (
+              <button
+                type="button"
+                className="view-more-btn mt-5"
+                onClick={() => setShowAllExperience((prev) => !prev)}
+              >
+                {showAllExperience ? 'View less' : 'View more'}
+              </button>
+            ) : null}
           </Section>
 
-          <Section id="blogs" title="Blogs">
+          <Section id="writing" title="Writing" isActive={activeSection === 'writing'}>
             <div className="space-y-5">
               {blogPosts.map((post, idx) => (
                 <BlogCard key={post.title} post={post} delay={idx * 100} />

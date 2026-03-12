@@ -59,17 +59,29 @@ body,
 
 @layer components {
   .app-shell {
-    @apply relative min-h-screen overflow-x-hidden;
+    @apply relative min-h-screen overflow-x-hidden lg:h-screen lg:overflow-hidden;
     background: var(--bg);
     color: var(--text-primary);
   }
 
   .layout-grid {
-    @apply mx-auto grid w-full max-w-6xl gap-10 px-6 pb-16 pt-10 lg:grid-cols-[minmax(280px,360px)_1fr] lg:gap-16 lg:pt-24;
+    @apply mx-auto grid w-full max-w-6xl gap-10 px-6 pb-16 pt-10 lg:h-screen lg:grid-cols-[minmax(280px,360px)_1fr] lg:gap-16 lg:py-10;
   }
 
   .intro-column {
-    @apply lg:sticky lg:top-0 lg:flex lg:h-screen lg:flex-col lg:justify-between lg:pb-24;
+    @apply lg:flex lg:h-[calc(100vh-5rem)] lg:flex-col lg:justify-between;
+  }
+
+  .main-column {
+    @apply relative lg:h-[calc(100vh-5rem)] lg:overflow-y-auto lg:pr-2;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .main-column::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    display: none;
   }
 
   .eyebrow {
@@ -108,11 +120,28 @@ body,
 
   .section {
     @apply reveal mb-16 scroll-mt-24 sm:mb-24;
+    transition: transform 300ms ease, filter 300ms ease, opacity 300ms ease;
+    opacity: 0.75;
+    filter: saturate(0.82);
   }
 
   .section-title {
     @apply mb-5 text-xs font-semibold uppercase tracking-[0.22em] sm:mb-6;
     color: var(--text-muted);
+    transition: color 240ms ease, letter-spacing 240ms ease, transform 240ms ease;
+  }
+
+  .section-active {
+    opacity: 1;
+    filter: saturate(1);
+    transform: translateY(-2px);
+    animation: sectionSpotlight 560ms ease-out both;
+  }
+
+  .section-active .section-title {
+    color: var(--accent);
+    letter-spacing: 0.26em;
+    transform: translateX(2px);
   }
 
   .content-card {
@@ -142,6 +171,14 @@ body,
 
   .content-subtitle {
     color: var(--text-muted);
+  }
+
+  .company-link {
+    @apply transition-colors duration-200;
+  }
+
+  .company-link:hover {
+    color: var(--accent);
   }
 
   .content-body {
@@ -186,6 +223,7 @@ body,
   .nav-link-active {
     color: var(--accent);
     transform: translateX(4px);
+    animation: navPulse 700ms ease-out;
   }
 
   .site-footer {
@@ -256,6 +294,19 @@ body,
     border-color: var(--chip-hover-border);
   }
 
+  .view-more-btn {
+    @apply rounded-full border px-4 py-2 text-xs font-semibold uppercase tracking-[0.12em] transition;
+    border-color: var(--chip-border);
+    background: var(--chip-bg);
+    color: var(--text-muted);
+  }
+
+  .view-more-btn:hover {
+    border-color: var(--chip-hover-border);
+    background: var(--chip-hover-bg);
+    color: var(--accent);
+  }
+
   .page-theme-toggle {
     @apply fixed right-4 top-4 z-30 sm:right-6 sm:top-6;
   }
@@ -294,6 +345,36 @@ body,
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes sectionSpotlight {
+  0% {
+    transform: translateY(12px) scale(0.985);
+    filter: saturate(0.75);
+  }
+  55% {
+    transform: translateY(-3px) scale(1.005);
+    filter: saturate(1.05);
+  }
+  100% {
+    transform: translateY(-2px) scale(1);
+    filter: saturate(1);
+  }
+}
+
+@keyframes navPulse {
+  0% {
+    transform: translateX(0);
+    text-shadow: none;
+  }
+  45% {
+    transform: translateX(8px);
+    text-shadow: 0 0 12px rgba(103, 232, 249, 0.35);
+  }
+  100% {
+    transform: translateX(4px);
+    text-shadow: none;
   }
 }
 

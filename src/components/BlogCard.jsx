@@ -36,7 +36,7 @@ export default function BlogCard({ post, delay }) {
         </div>
 
         <div>
-          <p className="meta-text">{post.year}</p>
+          {/* <p className="meta-text">{post.year}</p> */}
           <h3 className="content-title mt-2">{post.title}</h3>
           <p className="content-body mt-3">{post.excerpt}</p>
         </div>
