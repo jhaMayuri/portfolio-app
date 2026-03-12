@@ -6,15 +6,51 @@
   font-family: "Calibre", "SF Pro Display", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   color: #e2e8f0;
   background-color: #081122;
+  --bg: #081122;
+  --text-primary: #e2e8f0;
+  --text-strong: #f8fafc;
+  --text-muted: #94a3b8;
+  --text-subtle: #64748b;
+  --accent: #67e8f9;
+  --card-bg: rgba(15, 23, 42, 0.52);
+  --card-border: rgba(51, 65, 85, 0.72);
+  --card-hover-bg: rgba(15, 23, 42, 0.72);
+  --chip-bg: rgba(15, 23, 42, 0.52);
+  --chip-border: rgba(71, 85, 105, 0.75);
+  --chip-hover-bg: rgba(34, 211, 238, 0.12);
+  --chip-hover-border: rgba(34, 211, 238, 0.5);
+  --tag-bg: rgba(34, 211, 238, 0.1);
+  --tag-border: rgba(103, 232, 249, 0.24);
+  --divider: rgba(51, 65, 85, 0.7);
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.theme-light {
+  --bg: #f3f7ff;
+  --text-primary: #0f172a;
+  --text-strong: #020617;
+  --text-muted: #334155;
+  --text-subtle: #64748b;
+  --accent: #0f766e;
+  --card-bg: rgba(255, 255, 255, 0.74);
+  --card-border: rgba(148, 163, 184, 0.45);
+  --card-hover-bg: rgba(255, 255, 255, 0.92);
+  --chip-bg: rgba(255, 255, 255, 0.84);
+  --chip-border: rgba(148, 163, 184, 0.56);
+  --chip-hover-bg: rgba(15, 118, 110, 0.1);
+  --chip-hover-border: rgba(15, 118, 110, 0.45);
+  --tag-bg: rgba(15, 118, 110, 0.1);
+  --tag-border: rgba(15, 118, 110, 0.28);
+  --divider: rgba(148, 163, 184, 0.5);
 }
 
 html,
 body,
 #root {
   min-height: 100%;
+  background: var(--bg);
 }
 
 * {
@@ -23,7 +59,9 @@ body,
 
 @layer components {
   .app-shell {
-    @apply relative min-h-screen overflow-x-hidden bg-[#081122] text-slate-200;
+    @apply relative min-h-screen overflow-x-hidden;
+    background: var(--bg);
+    color: var(--text-primary);
   }
 
   .layout-grid {
@@ -35,19 +73,28 @@ body,
   }
 
   .eyebrow {
-    @apply text-sm uppercase tracking-[0.24em] text-slate-400;
+    @apply text-sm uppercase tracking-[0.24em];
+    color: var(--text-muted);
   }
 
   .hero-name {
-    @apply mt-4 text-4xl font-semibold tracking-tight text-slate-100 sm:text-5xl;
+    @apply mt-4 text-4xl font-semibold tracking-tight sm:text-5xl;
+    color: var(--text-strong);
   }
 
   .hero-role {
-    @apply mt-3 text-lg text-cyan-300;
+    @apply mt-3 text-lg;
+    color: var(--accent);
+  }
+
+  .hero-location {
+    @apply mt-2 text-sm;
+    color: var(--text-muted);
   }
 
   .hero-summary {
-    @apply mt-6 max-w-sm text-sm leading-relaxed text-slate-400 sm:text-base;
+    @apply mt-6 max-w-sm text-sm leading-relaxed sm:text-base;
+    color: var(--text-muted);
   }
 
   .intro-nav {
@@ -55,7 +102,8 @@ body,
   }
 
   .social-row {
-    @apply mt-10 flex flex-wrap gap-4 pb-4 text-sm text-slate-300 lg:mt-0;
+    @apply mt-10 flex flex-wrap gap-4 pb-4 text-sm lg:mt-0;
+    color: var(--text-primary);
   }
 
   .section {
@@ -63,16 +111,19 @@ body,
   }
 
   .section-title {
-    @apply mb-5 text-xs font-semibold uppercase tracking-[0.22em] text-slate-400 sm:mb-6;
+    @apply mb-5 text-xs font-semibold uppercase tracking-[0.22em] sm:mb-6;
+    color: var(--text-muted);
   }
 
   .content-card {
-    @apply rounded-2xl border border-slate-800/90 bg-slate-900/25 p-5 backdrop-blur-sm transition-all duration-300 sm:p-6;
+    @apply rounded-2xl border p-5 backdrop-blur-sm transition-all duration-300 sm:p-6;
+    border-color: var(--card-border);
+    background: var(--card-bg);
     animation: fadeUp 700ms ease-out both;
   }
 
   .content-card:hover {
-    @apply border-slate-700/90 bg-slate-900/40;
+    background: var(--card-hover-bg);
   }
 
   .experience-grid {
@@ -80,59 +131,129 @@ body,
   }
 
   .meta-text {
-    @apply text-xs uppercase tracking-[0.18em] text-slate-500;
+    @apply text-xs uppercase tracking-[0.18em];
+    color: var(--text-subtle);
   }
 
   .content-title {
-    @apply text-lg font-medium text-slate-100;
+    @apply text-lg font-medium;
+    color: var(--text-strong);
   }
 
   .content-subtitle {
-    @apply text-slate-400;
+    color: var(--text-muted);
   }
 
   .content-body {
-    @apply text-sm leading-relaxed text-slate-400;
+    @apply text-sm leading-relaxed;
+    color: var(--text-muted);
   }
 
   .content-body--strong {
-    @apply text-slate-300;
+    color: var(--text-primary);
   }
 
   .tag-chip {
-    @apply rounded-full border border-cyan-300/20 bg-cyan-400/10 px-3 py-1 text-xs text-cyan-200;
+    @apply rounded-full border px-2 py-0.5 text-[10px];
+    border-color: var(--tag-border);
+    background: var(--tag-bg);
+    color: var(--accent);
+    opacity: 0.78;
   }
 
   .link-chip {
-    @apply rounded-full border border-slate-700/90 bg-slate-900/35 px-4 py-2 transition-all duration-300;
+    @apply rounded-full border px-4 py-2 transition-all duration-300;
+    border-color: var(--chip-border);
+    background: var(--chip-bg);
   }
 
   .link-chip:hover {
-    @apply border-cyan-300/50 bg-cyan-300/10 text-cyan-200;
+    border-color: var(--chip-hover-border);
+    background: var(--chip-hover-bg);
+    color: var(--accent);
   }
 
   .nav-link {
-    @apply block w-fit text-sm uppercase tracking-[0.2em] text-slate-500 transition duration-300;
+    @apply block w-fit text-sm uppercase tracking-[0.2em] transition duration-300;
+    color: var(--text-subtle);
   }
 
   .nav-link:hover {
-    @apply translate-x-1 text-cyan-300;
+    @apply translate-x-1;
+    color: var(--accent);
+  }
+
+  .nav-link-active {
+    color: var(--accent);
+    transform: translateX(4px);
   }
 
   .site-footer {
-    @apply mt-12 border-t border-slate-800/90 pt-8 text-sm text-slate-500;
+    @apply mt-5 border-t pt-4 text-sm;
+    border-color: var(--divider);
+    color: var(--text-subtle);
   }
 
   .blog-layout {
-    @apply grid gap-4 sm:grid-cols-[180px_1fr] sm:items-start;
+    @apply grid gap-4 sm:grid-cols-[120px_1fr] sm:items-start;
   }
 
   .blog-image {
-    @apply h-32 w-full rounded-xl border border-slate-800/90 object-cover sm:h-28;
+    @apply h-[120px] w-[120px] rounded-xl border object-cover;
+    border-color: var(--card-border);
   }
 
   .blog-image--placeholder {
-    @apply grid place-items-center bg-gradient-to-br from-slate-800/70 to-slate-900/40;
+    @apply grid place-items-center;
+    background: linear-gradient(135deg, rgba(100, 116, 139, 0.26), rgba(15, 23, 42, 0.14));
+  }
+
+  .profile-frame {
+    @apply h-16 w-16 overflow-hidden rounded-2xl border;
+    border-color: var(--card-border);
+    background: var(--card-bg);
+  }
+
+  .profile-image {
+    @apply h-full w-full object-cover;
+  }
+
+  .profile-fallback {
+    @apply grid h-full w-full place-items-center text-sm font-semibold tracking-[0.08em];
+    color: var(--text-muted);
+  }
+
+  .theme-toggle {
+    @apply inline-flex h-9 w-9 items-center justify-center rounded-full border transition;
+    border-color: var(--chip-border);
+    background: var(--chip-bg);
+  }
+
+  .theme-toggle:hover {
+    border-color: var(--chip-hover-border);
+    background: var(--chip-hover-bg);
+  }
+
+  .theme-icon {
+    @apply h-4 w-4;
+  }
+
+  .social-icon {
+    @apply h-5 w-5;
+  }
+
+  .experience-card {
+    transition: transform 260ms ease, box-shadow 260ms ease, border-color 260ms ease;
+  }
+
+  .experience-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 14px 34px rgba(8, 18, 34, 0.22);
+    border-color: var(--chip-hover-border);
+  }
+
+  .page-theme-toggle {
+    @apply fixed right-4 top-4 z-30 sm:right-6 sm:top-6;
   }
 }
 
