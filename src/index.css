@@ -198,6 +198,10 @@ body,
     @apply grid gap-4 sm:grid-cols-[120px_1fr] sm:items-start;
   }
 
+  .blog-image-wrap {
+    @apply flex justify-center sm:justify-start;
+  }
+
   .blog-image {
     @apply h-[120px] w-[120px] rounded-xl border object-cover;
     border-color: var(--card-border);

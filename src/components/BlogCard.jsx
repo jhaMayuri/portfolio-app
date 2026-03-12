@@ -11,21 +11,29 @@ export default function BlogCard({ post, delay }) {
   const imageSrc = normalizeImagePath(post.image)
 
   return (
-    <a href={post.href} className="content-card lift block" style={{ animationDelay: `${delay}ms` }}>
+    <a
+      href={post.href}
+      target="_blank"
+      rel="noreferrer noopener"
+      className="content-card lift block"
+      style={{ animationDelay: `${delay}ms` }}
+    >
       <div className="blog-layout">
-        {imageSrc && !hasImageError ? (
-          <img
-            src={imageSrc}
-            alt={post.title}
-            className="blog-image"
-            loading="lazy"
-            onError={() => setHasImageError(true)}
-          />
-        ) : (
-          <div className="blog-image blog-image--placeholder">
-            <span className="meta-text">Add blog image</span>
-          </div>
-        )}
+        <div className="blog-image-wrap">
+          {imageSrc && !hasImageError ? (
+            <img
+              src={imageSrc}
+              alt={post.title}
+              className="blog-image"
+              loading="lazy"
+              onError={() => setHasImageError(true)}
+            />
+          ) : (
+            <div className="blog-image blog-image--placeholder">
+              <span className="meta-text">Add blog image</span>
+            </div>
+          )}
+        </div>
 
         <div>
           <p className="meta-text">{post.year}</p>

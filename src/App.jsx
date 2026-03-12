@@ -234,7 +234,8 @@ export default function App() {
           <Section id="about" title="About">
             <div className="content-card">
               <p className="content-body content-body--strong">
-                Experienced frontend engineer specializing in Angular, modern web architecture, and scalable frontend systems.
+              Frontend engineer specializing in Angular architecture,
+              performance optimization, and scalable UI systems.
               </p>
               <p className="content-body mt-5">
                 I focus on building performant, maintainable UI systems and creating engineering environments where teams can ship with confidence.
