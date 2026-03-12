@@ -22,6 +22,8 @@
   --tag-bg: rgba(34, 211, 238, 0.1);
   --tag-border: rgba(103, 232, 249, 0.24);
   --divider: rgba(51, 65, 85, 0.7);
+  --experience-shadow-hover: 0 14px 34px rgba(8, 18, 34, 0.22);
+  --lift-shadow-hover: 0 18px 50px rgba(8, 18, 34, 0.5);
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -44,6 +46,8 @@
   --tag-bg: rgba(15, 118, 110, 0.1);
   --tag-border: rgba(15, 118, 110, 0.28);
   --divider: rgba(148, 163, 184, 0.5);
+  --experience-shadow-hover: 0 10px 24px rgba(15, 23, 42, 0.1), 0 2px 8px rgba(15, 23, 42, 0.08);
+  --lift-shadow-hover: 0 12px 28px rgba(15, 23, 42, 0.1), 0 2px 8px rgba(15, 23, 42, 0.08);
 }
 
 html,
@@ -290,7 +294,7 @@ body,
 
   .experience-card:hover {
     transform: translateY(-3px);
-    box-shadow: 0 14px 34px rgba(8, 18, 34, 0.22);
+    box-shadow: var(--experience-shadow-hover);
     border-color: var(--chip-hover-border);
   }
 
@@ -334,7 +338,7 @@ body,
 
 .lift:hover {
   transform: translateY(-4px);
-  box-shadow: 0 18px 50px rgba(8, 18, 34, 0.5);
+  box-shadow: var(--lift-shadow-hover);
 }
 
 @keyframes fadeUp {
