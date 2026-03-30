@@ -72,12 +72,19 @@ const blogPosts = [
     image: '/blogs/over-engineering.png',
   },
   {
-    title: 'Mentoring Engineers Through Architecture Reviews',
+    title: "The Frontend works.. until it doesn't",
     excerpt:
-      'How structured code reviews and architecture discussions can accelerate engineering maturity.',
-    href: '#',
-    image: '',
+      'A reflection on how real-world conditions expose cracks in “working” UIs.',
+    href: 'https://dev.to/mayuri_jha_bc0b497f737276/the-frontend-works-until-it-doesnt-42j9',
+    image: '/blogs/edge-case-broken-prod.png',
   },
+  // {
+  //   title: 'Mentoring Engineers Through Architecture Reviews',
+  //   excerpt:
+  //     'How structured code reviews and architecture discussions can accelerate engineering maturity.',
+  //   href: '#',
+  //   image: '',
+  // },
 ]
 
 function normalizeImagePath(path) {
